@@ -1,141 +1,40 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Histórico de Conversas</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-    input,
-    select {
-      padding: 10px;
-      width: 100%;
-      box-sizing: border-box;
-      margin-top: 5px;
-    }
-
-    #buscar {
-      padding: 10px 20px;
-      margin-top: 20px;
-      cursor: pointer;
-      border: none;
-      border-radius: 5px;
-      background-color: #1976d2;
-      color: white;
-      font-weight: bold;
-    }
-
-    button {
-      cursor: pointer;
-      border: none;
-      border-radius: 5px;
-      background-color: #1976d2;
-      color: white;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #1565c0;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th,
-    td {
-      padding: 5px;
-      border-bottom: 1px solid #ddd;
-      text-align: left;
-    }
-
-    th {
-      background-color: #f2f2f2;
-    }
-
-    .action-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 18px;
-      color: #1976d2;
-    }
-
-    .action-btn:hover {
-      color: #0d47a1;
-    }
-
-    #historico-container {
-      display: none;
-      margin-top: 30px;
-    }
-
-    #voltar {
-      margin-bottom: 20px;
-      background-color: #1976d2;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    #voltar:hover {
-      background-color: #1565c0;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
+  <div class="card" id="login-card">
+    <h2>🔐 Acesso Restrito</h2>
+    <label for="senha">Digite a senha:</label>
+    <input type="password" id="senha" placeholder="Senha de acesso" />
+    <button id='btnEntrar' onclick="validarSenha()">Entrar</button>
+    <div class="error" id="erro-senha"></div>
+  </div>
 
-  <div class="container">
+  <div class="card" id="main-content">
     <h2>🔍 Filtrar Histórico de Conversas</h2>
-
     <form id="filtro-form">
       <label for="start-date">Data Inicial:</label>
-      <input type="date" id="start-date" name="start-date" required>
+      <input type="date" id="start-date" required />
 
       <label for="end-date">Data Final:</label>
-      <input type="date" id="end-date" name="end-date" required>
+      <input type="date" id="end-date" required />
 
       <label for="tipo">Tipo:</label>
-      <select id="tipo" name="tipo">
+      <select id="tipo">
+        <option value="" disabled selected>Selecione...</option>
         <option value="companies">Empresa</option>
         <option value="brokers">Corretor</option>
       </select>
 
       <label for="id">ID:</label>
-      <input type="number" id="id" name="id" placeholder="Digite o ID...">
+      <input type="number" id="id" placeholder="Digite o ID..." />
 
-      <button id='buscar' type="submit">Buscar</button>
+      <button id='btnBuscar' type="submit">Buscar</button>
     </form>
 
     <table id="resultado-tabela">
@@ -143,115 +42,18 @@
         <tr>
           <th>ID</th>
           <th>Data</th>
-          <th>Ações</th>
+          <th style='text-align:center'>Ações</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Resultados serão inseridos aqui -->
-      </tbody>
+      <tbody></tbody>
     </table>
-
-    <div id="historico-container">
-      <button id="voltar" onclick="voltarParaBusca()">⬅️ Voltar</button>
-      <div id="historico-conteudo">🔄 Carregando histórico...</div>
-    </div>
   </div>
 
-  <script>
-    const startDateInput = document.getElementById("start-date");
-    const endDateInput = document.getElementById("end-date");
-    const hoje = new Date();
-    const seteDiasAtras = new Date();
-    seteDiasAtras.setDate(hoje.getDate() - 7);
-    startDateInput.value = seteDiasAtras.toISOString().split("T")[0];
-    endDateInput.value = hoje.toISOString().split("T")[0];
+  <div class="card" id="historico-container">
+    <button id="voltar" onclick="voltarParaBusca()">⬅️ Voltar</button>
+    <div id="historico-conteudo">🔄 Carregando histórico...</div>
+  </div>
 
-    function buscarDados(tipo = "", id = "", filtro=true) {
-      const startDate = startDateInput.value;
-      const endDate = endDateInput.value;
-      fetch("https://n8n.apto.vc/webhook/chat-histories", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            tipo,
-            id,
-            startDate,
-            endDate,
-            filtro
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          const tbody = document.querySelector("#resultado-tabela tbody");
-          tbody.innerHTML = "";
-          data.forEach(item => {
-            const tr = document.createElement("tr");
-            const tdId = document.createElement("td");
-            tdId.textContent = item.session_id;
-            const tdData = document.createElement("td");
-            const [ano, mes, dia] = item.created_at.split('-');
-            tdData.textContent = `${dia}/${mes}/${ano}`; // formato pt-BR
-            const tdAcoes = document.createElement("td");
-            const btn = document.createElement("button");
-            btn.className = "action-btn";
-            btn.innerHTML = "👁️";
-            btn.title = "Ver histórico";
-            btn.onclick = () => {
-              document.getElementById("filtro-form").style.display = "none";
-              document.getElementById("resultado-tabela").style.display = "none";
-              document.getElementById("historico-container").style.display = "block";
-              fetch("https://n8n.apto.vc/webhook/chat-histories", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify({
-                    id: item.session_id,
-                    data: item.created_at,
-                    filtro: false
-                  })
-                })
-                .then(response => response.text())
-                .then(html => {
-                  document.getElementById("historico-conteudo").innerHTML = html;
-                })
-                .catch(error => {
-                  document.getElementById("historico-conteudo").innerHTML = "<p>❌ Erro ao carregar o histórico.</p>";
-                  console.error(error);
-                });
-            };
-            tdAcoes.appendChild(btn);
-            tr.appendChild(tdId);
-            tr.appendChild(tdData);
-            tr.appendChild(tdAcoes);
-            tbody.appendChild(tr);
-          });
-        })
-        .catch(error => {
-          alert("Erro ao buscar dados.");
-          console.error(error);
-        });
-    }
-
-    function voltarParaBusca() {
-      document.getElementById("filtro-form").style.display = "block";
-      document.getElementById("resultado-tabela").style.display = "table";
-      document.getElementById("historico-container").style.display = "none";
-    }
-    window.onload = () => {
-      buscarDados();
-    };
-    document.getElementById("filtro-form").addEventListener("submit", function(event) {
-      event.preventDefault();
-      const session_id = document.getElementById("tipo").value + '-' + document.getElementById("id").value;
-      const tipo = document.getElementById("tipo").value;
-      const id = document.getElementById("id").value === '' ? '' : session_id;
-      buscarDados(tipo, id);
-    });
-  </script>
-
+  <script src="script.js"></script>
 </body>
-
 </html>
