@@ -8,41 +8,65 @@
 </head>
 <body>
   <div class="card" id="login-card">
-    <h2>🔐 Acesso Restrito</h2>
-    <label for="senha">Digite a senha:</label>
-    <input type="password" id="senha" placeholder="Senha de acesso" />
-    <button id='btnEntrar' onclick="validarSenha()">Entrar</button>
-    <div class="error" id="erro-senha"></div>
+    <div class="login-brand">
+      <div class="logo">💬</div>
+      <h1>Chat Histories</h1>
+    </div>
+    <p class="subtitle">Acesse o painel com sua senha</p>
+
+    <form id="login-form" aria-label="Formulário de login">
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" name="senha" placeholder="Digite sua senha" autocomplete="current-password" required />
+      <div class="error" id="erro-senha" role="status" aria-live="polite"></div>
+      <button id="btnEntrar" type="submit">Entrar</button>
+    </form>
   </div>
 
   <div class="card" id="main-content">
     <h2>🔍 Filtrar Histórico de Conversas</h2>
     <form id="filtro-form">
-      <label for="start-date">Data Inicial:</label>
-      <input type="date" id="start-date" required />
+      <div class="fields">
+        <div class="field">
+          <label for="start-date">Data Inicial:</label>
+          <input type="date" id="start-date" required />
+        </div>
 
-      <label for="end-date">Data Final:</label>
-      <input type="date" id="end-date" required />
+        <div class="field">
+          <label for="end-date">Data Final:</label>
+          <input type="date" id="end-date" required />
+        </div>
 
-      <label for="tipo">Tipo:</label>
-      <select id="tipo">
-        <option value="" disabled selected>Selecione...</option>
-        <option value="companies">Empresa</option>
-        <option value="brokers">Corretor</option>
-      </select>
+        <div class="field">
+          <label for="tipo">Tipo:</label>
+          <div class="select-wrap">
+            <select id="tipo">
+              <option value="" selected>Selecione...</option>
+              <option value="companies">Empresa</option>
+              <option value="brokers">Corretor</option>
+            </select>
+            <button type="button" id="clear-tipo" class="clear-select" title="Limpar seleção">✖</button>
+          </div>
+        </div>
 
-      <label for="id">ID:</label>
-      <input type="number" id="id" placeholder="Digite o ID..." />
+        <div class="field">
+          <label for="id">ID:</label>
+          <input type="number" id="id" placeholder="Digite o ID..." />
+        </div>
 
-      <button id='btnBuscar' type="submit">Buscar</button>
+        <div class="field full">
+          <button id='btnBuscar' type="submit">Buscar</button>
+        </div>
+      </div>
     </form>
 
+    <div id="tabela-loading" class="table-loading" aria-live="polite" style="display:none">🔄 Carregando resultados...</div>
     <table id="resultado-tabela">
       <thead>
         <tr>
           <th>ID</th>
+          <th>Cliente</th>
           <th>Data</th>
-          <th style='text-align:center'>Ações</th>
+          <th style='text-align:center'>Visualizar</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -50,8 +74,18 @@
   </div>
 
   <div class="card" id="historico-container">
-    <button id="voltar" onclick="voltarParaBusca()">⬅️ Voltar</button>
-    <div id="historico-conteudo">🔄 Carregando histórico...</div>
+    <div class="historico-header">
+      <button id="voltar" onclick="voltarParaBusca()">⬅️ Voltar</button>
+      <div class="historico-title">
+        <div class="logo title-logo">💬</div>
+        <h2>Histórico de Conversa</h2>
+      </div>
+    </div>
+
+    <div id="historico-info" class="historico-info" aria-live="polite"></div>
+    <div class="messages-wrap">
+      <div id="historico-conteudo">🔄 Carregando histórico...</div>
+    </div>
   </div>
 
   <script src="./script.js"></script>

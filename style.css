@@ -1,129 +1,549 @@
+#loading styles
+.table-loading {
+  background: linear-gradient(90deg, var(--white), var(--blue-100));
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+  color: var(--gray-900);
+  font-weight: 700;
+  margin-top: 1.25rem;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.04);
+}
+
+/* style.css — paleta aplicada apenas via variáveis */
 * {
-  box-sizing: border-box;
+  box-sizing: border-box
+}
+
+:root {
+  /* Paleta fornecida */
+  --blue-500: #0066FF;
+  /* Azul principal */
+  --blue-400: #3385FF;
+  --blue-300: #66A3FF;
+  --blue-200: #99C2FF;
+  --blue-100: #CCE0FF;
+
+  --gray-900: #333333;
+  --gray-700: #666666;
+  --gray-500: #999999;
+  --gray-300: #CCCCCC;
+  --gray-200: #E5E5E5;
+  --gray-100: #F2F2F2;
+  --white: #FFFFFF;
+
+  --black-uber: #000000;
+  --yellow: #FFD400;
+  --yellow-100: #FFF6CC;
+  --green: #28CC00;
+  --green-100: #ABCCA3;
+  --red: #E52421;
+  --red-100: #E5B8B7;
+
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --bg-light: #eaf2ff;
 }
 
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #e0e7ff;
+  background: linear-gradient(180deg, var(--blue-100), var(--bg-light));
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   min-height: 100vh;
-  padding: 20px;
+  padding: 20px
 }
 
 .card {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
+  background: var(--card-bg);
+  padding: 2.25rem;
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.18);
+  max-width: 420px;
   width: 100%;
   display: none;
+  backdrop-filter: blur(4px)
 }
 
 .card.active {
-  display: block;
+  display: block
 }
 
-h2 {
-  margin-bottom: 1rem;
+h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--gray-900)
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  justify-content: center;
+  margin-bottom: .5rem
+}
+
+.logo {
+  font-size: 1.6rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--blue-500), var(--blue-300));
+  color: var(--white);
+  border-radius: 10px
+}
+
+.subtitle {
   text-align: center;
-  color: #1e3a8a;
+  margin: .5rem 0 1rem 0;
+  color: var(--gray-700)
 }
 
 label {
   display: block;
   margin-top: 1rem;
-  font-weight: 600;
+  font-weight: 600
 }
 
-input, select {
+input,
+select {
   width: 100%;
-  padding: 0.75rem;
-  margin-top: 0.5rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  padding: .75rem;
+  margin-top: .5rem;
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
   font-size: 1rem;
+  background: var(--white);
+  transition: box-shadow .18s ease, border-color .18s ease
 }
 
-#btnBuscar, #btnEntrar {
-  margin-top: 1.5rem;
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #2563eb;
-  color: white;
+/* wrapper for select with clear button */
+.select-wrap {
+  position: relative;
+}
+
+.select-wrap select { padding-right: 2.4rem; }
+
+.clear-select {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--gray-700);
+  padding: 4px;
+}
+
+.clear-select:hover { color: var(--gray-900); }
+
+/* botão escondido por padrão; JS o exibirá quando houver seleção */
+.clear-select { display: none; }
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--blue-500);
+  box-shadow: 0 6px 20px rgba(0, 102, 255, 0.12)
+}
+
+#btnBuscar,
+#btnEntrar {
+  margin-top: 1.25rem;
+  width: 100%;
+  padding: .85rem;
+  background: linear-gradient(90deg, var(--blue-500), var(--blue-300));
+  color: var(--white);
+  border: 0;
+  border-radius: 12px;
+  font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: transform .12s ease, box-shadow .12s ease
+}
+
+#btnBuscar:active,
+#btnEntrar:active {
+  transform: translateY(1px)
+}
+
+#btnBuscar:hover,
+#btnEntrar:hover {
+  box-shadow: 0 10px 30px rgba(6, 22, 56, 0.12)
 }
 
 button {
-  width: 100%;
-  background-color: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  cursor: pointer
 }
 
 button:hover {
-  background-color: #1d4ed8;
+  background-color: var(--blue-500)
 }
 
 .error {
-  color: red;
+  color: var(--red);
   margin-top: 1rem;
-  text-align: center;
+  text-align: center
+}
+
+.shake {
+  animation: shake .36s ease
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0)
+  }
+
+  25% {
+    transform: translateX(-6px)
+  }
+
+  50% {
+    transform: translateX(6px)
+  }
+
+  75% {
+    transform: translateX(-4px)
+  }
+
+  100% {
+    transform: translateX(0)
+  }
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
+  margin-top: 1rem
 }
 
-th, td {
-  padding: 0.25rem;
-  border-bottom: 1px solid #e2e8f0;
-  text-align: left;
+th,
+td {
+  padding: .25rem;
+  border-bottom: 1px solid var(--gray-100);
+  text-align: left
 }
 
 th {
-  background-color: #f1f5f9;
+  background-color: var(--gray-100)
 }
 
 .action-btn {
-  background: none;
-  border: none;
-  color: #2563eb;
-  cursor: pointer;
+  background: linear-gradient(90deg, var(--white), var(--blue-100));
+  border: 1px solid var(--blue-200);
+  padding: 6px 8px;
+  border-radius: 8px;
+  color: var(--blue-500);
+  cursor: pointer
 }
 
 .action-btn:hover {
-  color: #1d4ed8;
+  background: linear-gradient(90deg, var(--blue-200), var(--blue-100))
 }
 
 #voltar {
-  margin-top: 1rem;
-  background-color: #2563eb;
-  color: white;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(90deg, var(--blue-500), var(--blue-300));
+  color: var(--white);
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  padding: .75rem 1.5rem;
+  border-radius: 12px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 700;
+  transition: transform .12s ease, box-shadow .12s ease
 }
 
 #voltar:hover {
-  background-color: #1d4ed8;
+  box-shadow: 0 10px 30px rgba(6, 22, 56, 0.12)
+}
+
+#voltar:active {
+  transform: translateY(1px)
+}
+
+#main-content,
+#historico-container {
+  max-width: 980px;
+  width: 100%
+}
+
+#main-content form .fields {
+  display: block
+}
+
+#main-content form .field {
+  margin-bottom: .75rem
+}
+
+@media(min-width:700px) {
+  #main-content form .fields {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    align-items: end
+  }
+
+  #main-content form .field.full {
+    grid-column: 1/-1
+  }
+
+  #main-content label {
+    margin-top: 0
+  }
+
+  #main-content #btnBuscar {
+    grid-column: 1/-1
+  }
+}
+
+/* Tabela de resultados: corpo rolável com cabeçalho fixo */
+#resultado-tabela {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+  margin-top: 1.25rem;
+  border: 1px solid var(--gray-200);
+  display: block; /* necessário para tornar tbody rolável */
+  overflow: hidden; /* garante que os cantos arredondados sejam aplicados */
+}
+
+/* thead e tbody como blocos para permitir scroll apenas no tbody */
+#resultado-tabela thead {
+  display: block;
+}
+
+#resultado-tabela tbody {
+  display: block;
+  max-height: calc(100vh - 420px); /* ajuste conforme layout; mantém a tabela dentro da viewport */
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mantém linhas como tabela para preservar colunas alinhadas */
+#resultado-tabela thead tr,
+#resultado-tabela tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* histórico container: regras aplicadas mais abaixo (evita duplicação) */
+
+/* Ajustes responsivos: alturas menores em telas pequenas */
+@media (max-width: 700px) {
+  .table-wrap { max-height: 260px; }
+  .messages-wrap { max-height: calc(55vh); }
+}
+
+/* Scrollbar mais discreto (apenas estética) */
+.table-wrap::-webkit-scrollbar, .messages-wrap::-webkit-scrollbar { height: 10px; width: 10px; }
+.table-wrap::-webkit-scrollbar-thumb, .messages-wrap::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 8px; }
+.table-wrap::-webkit-scrollbar-track, .messages-wrap::-webkit-scrollbar-track { background: transparent; }
+
+#resultado-tabela thead th {
+  background-color: var(--blue-100);
+  color: var(--gray-900);
+  font-weight: 700;
+  padding: 0.9rem 1rem;
+  text-align: left;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--gray-200);
+  position: sticky;
+  top: 0;
+  z-index: 6;
+}
+
+/* Restaurar cantos arredondados para o cabeçalho quando o thead é display:block */
+#resultado-tabela thead th:first-child {
+  border-top-left-radius: 12px;
+}
+
+#resultado-tabela thead th:last-child {
+  border-top-right-radius: 12px;
+}
+
+#resultado-tabela tbody tr {
+  transition: background-color .12s ease, transform .08s ease;
+}
+
+#resultado-tabela tbody tr:nth-child(even) {
+  background: rgba(0,0,0,0.0);
+}
+
+#resultado-tabela tbody tr:hover {
+  background: linear-gradient(90deg, rgba(51,102,255,0.04), rgba(51,102,255,0.02));
+  transform: translateY(0.5px);
+}
+
+#resultado-tabela td {
+  padding: 0.85rem 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--gray-100);
+  font-size: 0.95rem;
+  color: var(--gray-900);
+}
+
+#resultado-tabela th:nth-child(4),
+#resultado-tabela td:nth-child(4) {
+  text-align: center;
+  width: 120px;
+}
+
+/* Ações dentro da tabela */
+.action-btn{padding:6px 10px;border-radius:10px;border:1px solid var(--blue-200);background:linear-gradient(90deg,var(--white),var(--blue-100));color:var(--blue-500);font-weight:700}
+.action-btn:hover{box-shadow:0 8px 22px rgba(6,22,56,0.08)}
+
+#historico-conteudo {
+  font-size: .95rem;
+  color: var(--gray-900)
+}
+
+#historico-conteudo h2 {
+  text-align: center;
+  color: var(--gray-900);
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  margin-top: 0
+}
+
+#historico-conteudo>div>div:first-of-type {
+  background: linear-gradient(90deg, var(--white), var(--blue-100));
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--blue-500)
+}
+
+#historico-conteudo strong {
+  color: var(--gray-900);
+  font-weight: 700
+}
+
+#historico-conteudo br+strong,
+/* Mantém a estrutura base - não altera display por padrão (respeita .card display:none) */
+#historico-container {
+  width: 100%;
+  max-width: 980px;
+  box-sizing: border-box;
+}
+
+/* Quando o histórico estiver ativo, usa layout flex e altura baseada na viewport */
+#historico-container.active {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 48px);
+}
+
+.messages-wrap {
+  overflow: auto;
+  flex: 1 1 auto;
+  min-height: 0; /* permite que o flex child calcule altura e o overflow funcione */
+  margin-top: 0.75rem;
+  padding-right: 8px; /* espaço para scrollbar */
+  -webkit-overflow-scrolling: touch;
+}
+
+#historico-conteudo div[style*="#e1f5fe"] {
+  margin-bottom: 1rem !important;
+  padding: .95rem 1rem !important;
+  background: linear-gradient(135deg, var(--blue-200), var(--blue-100)) !important;
+  border-left: 4px solid var(--blue-500);
+  border-radius: 10px !important;
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.08) !important
+}
+
+#historico-conteudo div[style*="padding: 10px"] strong {
+  display: block;
+  margin-bottom: .4rem;
+  font-size: .9rem
+}
+
+#historico-conteudo div[style*="padding: 10px"] {
+  line-height: 1.5;
+  word-break: break-word;
+  white-space: pre-wrap
+}
+
+@media(max-width:600px) {
+  .card {
+    padding: 1rem
+  }
+
+  input,
+  select,
+  button {
+    font-size: .9rem
+  }
+
+  #historico-conteudo {
+    font-size: .9rem
+  }
+
+  #historico-conteudo h2 {
+    font-size: 1.1rem
+  }
+}
+
+#historico-conteudo strong {
+  color: var(--gray-900);
+  font-weight: 700;
+}
+
+#historico-conteudo br+strong,
+#historico-conteudo br {
+  display: block;
+  margin-top: 0.3rem;
+}
+
+/* Estilo para datas */
+#historico-conteudo div[style*="margin-top: 30px"] {
+  margin-top: 1.5rem !important;
+  margin-bottom: 1rem !important;
+  font-weight: 700 !important;
+  color: var(--gray-700) !important;
+  font-size: 1rem !important;
+}
+
+/* Mensagens de Cliente */
+#historico-conteudo div[style*="#fff3e0"] {
+  margin-bottom: 1rem !important;
+  padding: 0.95rem 1rem !important;
+  background: linear-gradient(135deg, var(--yellow-100), var(--yellow)) !important;
+  border-left: 4px solid var(--yellow);
+  border-radius: 10px !important;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.08) !important;
+}
+
+/* Mensagens de Bot */
+#historico-conteudo div[style*="#e1f5fe"] {
+  margin-bottom: 1rem !important;
+  padding: 0.95rem 1rem !important;
+  background: linear-gradient(135deg, var(--blue-200), var(--blue-100)) !important;
+  border-left: 4px solid var(--blue-500);
+  border-radius: 10px !important;
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.08) !important;
+}
+
+/* Melhor legibilidade do conteúdo das mensagens */
+#historico-conteudo div[style*="padding: 10px"] strong {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+
+#historico-conteudo div[style*="padding: 10px"] {
+  line-height: 1.5;
+  word-break: break-word;
+  white-space: pre-wrap;
 }
 
 @media (max-width: 600px) {
@@ -131,7 +551,155 @@ th {
     padding: 1rem;
   }
 
-  input, select, button {
+  input,
+  select,
+  button {
     font-size: 0.9rem;
   }
+
+  #historico-conteudo {
+    font-size: 0.9rem;
+  }
+
+  #historico-conteudo h2 {
+    font-size: 1.1rem;
+  }
+}
+
+/* Header do histórico: botão à esquerda, título centrado com logo */
+.historico-header {
+  position: relative;
+  padding-bottom: 1rem;
+  margin-bottom: 8px
+}
+
+.historico-header button#voltar {
+  position: absolute;
+  left: 0;
+  top: 0
+}
+
+.historico-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem
+}
+
+.title-logo {
+  width: 44px;
+  height: 44px;
+  font-size: 1.25rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--blue-400), var(--blue-500));
+  color: var(--white)
+}
+
+.historico-title h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--gray-900)
+}
+
+/* Bloco com Tipo / ID / Cliente / Data */
+.historico-info .info-card {
+  background: var(--card-bg);
+  padding: 12px;
+  border-radius: 10px;
+  border-left: 4px solid var(--gray-900);
+  border-top: 1px solid var(--gray-900);
+  border-right: 1px solid var(--gray-900);
+  border-bottom: 1px solid var(--gray-900);
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.04);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: var(--gray-900)
+}
+
+.historico-info .info-card div {
+  font-size: .95rem
+}
+
+.historico-info .info-card .info-date {
+  color: var(--gray-700);
+  font-weight: 700
+}
+
+/* Título dentro do card de informações */
+.historico-info .info-card .info-title{
+  background: linear-gradient(90deg,var(--gray-100),var(--gray-900));
+  padding:.6rem 1rem;
+  border-radius:8px 8px 0 0;
+  text-align:center;
+  font-weight:700;
+  color:var(--gray-900);
+  margin:-12px -12px 8px -12px;
+}
+.historico-info .info-card .info-body{padding:6px 0 0 0}
+
+/* Força título e corpo a ocuparem toda a largura do card (título no topo, informações abaixo) */
+.historico-info .info-card .info-title{grid-column:1/-1}
+.historico-info .info-card .info-body{grid-column:1/-1}
+
+/* Mensagens: base e variantes cliente / bot */
+.message {
+  width: 100%;
+  display: block;
+  padding: 0.95rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.04);
+  word-break: break-word;
+  white-space: pre-wrap
+}
+
+.message strong {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--gray-900);
+  font-weight: 700
+}
+
+.msg-cliente {
+  background: linear-gradient(135deg, var(--yellow-100), var(--yellow));
+  border-left: 4px solid rgba(0, 0, 0, 0.06);
+  color: var(--gray-900)
+}
+
+.msg-bot {
+  background: linear-gradient(135deg, var(--blue-200), var(--blue-100));
+  border-left: 4px solid var(--blue-500);
+  color: var(--gray-900)
+}
+
+.msg-ia {
+  background: linear-gradient(135deg, var(--blue-200), var(--blue-100));
+  border-left: 4px solid var(--blue-500);
+  color: var(--gray-900)
+}
+
+@media (min-width:800px) {
+  .historico-info .info-card {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px
+  }
+
+  .message {
+    padding: 1rem 1.25rem
+  }
+}
+
+/* Faz com que o card principal ocupe a altura da viewport quando ativo */
+#main-content.active {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 48px);
+  box-sizing: border-box;
+  overflow: auto;
+  min-height: 0;
 }
